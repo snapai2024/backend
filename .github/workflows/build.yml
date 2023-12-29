@@ -1,0 +1,26 @@
+name: build
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+    branches: ['**']
+
+jobs:
+  actions:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
+    steps:
+      - uses: actions/checkout@v3
+      - name: setup-nodejs
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16.x'
+      - name: dependencies
+        run: npm install
+      - name: build
+        run: npm run build
+      - name: test
+        run: npm test
