@@ -5,26 +5,8 @@ const upload = multer({dest: 'tmp'})
 
 const imageRouter: Router = Router();
 
-/**
- * @openapi
- * /analyse:
- *      post:
- *          summary: Analyse an image
- *          tags:
- *              - Image
- *          requestBody:
- *              required: true
- *              content:
- *                  multipart/form-data:
- *                      schema:
- *                          type: object
- *                          properties:
- *                              imageUrl:
- *                                  type: string
- *          responses:
- *              200:
- *                  description: Created
- */
-imageRouter.post('/analyse', upload.single('image'), ImageController.analyse);
+imageRouter.get('/:id', ImageController.getById);
+imageRouter.post('/analyse', upload.single('file'), ImageController.analyse);
+imageRouter.post('/', upload.single('file'), ImageController.create);
 
 export default imageRouter;
