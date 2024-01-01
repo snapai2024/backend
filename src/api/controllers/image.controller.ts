@@ -45,14 +45,15 @@ class _ImageController implements ImageController {
         try {
             if (!req.file) throw new CausalError("Vous devez fournir une image.");
 
-            const { name, description, labels } = req.body;
+            const { name, description, labels, collectionId } = req.body;
             const { path } = req.file;
 
             const input: CreateImageDto = {
                 name: name,
                 description: description,
                 path: path,
-                labels: JSON.parse(labels)
+                labels: JSON.parse(labels),
+                collectionId: collectionId
             };
 
             const imageToCreate: Image = ImageParser.parseIn(input);

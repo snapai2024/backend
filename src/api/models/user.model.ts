@@ -1,8 +1,12 @@
-import { BelongsTo, Column, DataType, DefaultScope, ForeignKey, Model, Table } from 'sequelize-typescript';
+import { BelongsTo, Column, DataType, DefaultScope, ForeignKey, HasMany, Model, Table } from 'sequelize-typescript';
 import Role from './role.model';
+import { Collection } from './index';
 
 @DefaultScope(() => ({
-  include: [{ model: Role, attributes: Object.keys(Role.getAttributes()), include: [] }],
+  include: [
+      { model: Role, attributes: Object.keys(Role.getAttributes()), include: [] },
+      { model: Collection, attributes: Object.keys(Collection.getAttributes()), include: [] }
+  ],
 }))
 @Table({ tableName: 'users' })
 export default class User extends Model {
@@ -30,6 +34,9 @@ export default class User extends Model {
 
   @BelongsTo(() => Role)
   declare role: Role;
+
+  @HasMany(() => Collection)
+  declare collections?: Collection[]
 }
 
 export interface UserDto {

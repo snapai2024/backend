@@ -1,5 +1,5 @@
 import { Sequelize } from 'sequelize-typescript';
-import { Role, User, Image } from '../api/models';
+import { Role, User, Collection, Image } from '../api/models';
 import mysql from 'mysql2/promise';
 import { config } from '../common/config/main';
 import { LogType, Logger } from '../common/services/logger';
@@ -29,7 +29,7 @@ db.initialize = async (stepper: Stepper) => {
       dialect: 'mysql',
       username: config.databaseConfig.user,
       password: config.databaseConfig.password,
-      models: [Role, User, Image],
+      models: [Role, User, Collection, Image],
       logging: (msg) => Logger.info(msg, LogType.DB),
     });
 

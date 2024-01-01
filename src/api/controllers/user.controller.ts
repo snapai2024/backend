@@ -1,6 +1,6 @@
 import { Response } from 'express';
 import { UserService } from '../services/user.service';
-import { CreateUserDto, User, UpdateUserDto, UserDto } from '../models';
+import { CreateUserDto, User, UpdateUserDto } from '../models';
 import { CausalError } from '../../common/errors/causal.error';
 import { CustomRequest } from '../../common/entities/customRequest';
 import { UserParser } from '../parsers/user.parser';

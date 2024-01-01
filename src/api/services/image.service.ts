@@ -48,7 +48,8 @@ class _ImageService implements ImageService {
             name: input.name,
             description: input.description,
             path: input.path,
-            labels: input.labels
+            labels: input.labels,
+            collectionId: input.collectionId
         })
 
         return createdImage.reload();

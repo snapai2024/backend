@@ -10,7 +10,8 @@ class _ImageParser {
             name: image.name,
             description: image.description,
             path: image.path,
-            labels: image.labels
+            labels: image.labels,
+            collectionId: image.collectionId
         });
     }
 }

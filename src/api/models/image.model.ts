@@ -1,11 +1,12 @@
 import {
-    AutoIncrement,
+    AutoIncrement, BelongsTo,
     Column,
-    DataType,
+    DataType, ForeignKey,
     Model,
     PrimaryKey,
     Table,
 } from 'sequelize-typescript';
+import { Collection } from './index';
 
 @Table({ tableName: 'images' })
 export default class Image extends Model {
@@ -40,6 +41,13 @@ export default class Image extends Model {
         allowNull: false,
     })
     declare labels: string;
+
+    @ForeignKey(() => Collection)
+    @Column
+    declare collectionId: number;
+
+    @BelongsTo(() => Collection)
+    declare collection: Collection;
 }
 
 export interface ImageDto {
@@ -48,6 +56,7 @@ export interface ImageDto {
     description: string;
     path: string;
     labels: string;
+    collectionId?: number;
 }
 
 export interface CreateImageDto extends Omit<ImageDto, 'id'> {}
