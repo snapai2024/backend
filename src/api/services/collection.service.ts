@@ -27,6 +27,7 @@ class _CollectionService implements CollectionService {
     public async create(input: Collection): Promise<Collection> {
         const createdCollection = await Collection.create({
             name: input.name,
+            userId: input.userId
         });
 
         return createdCollection.reload();

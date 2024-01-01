@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import { BusinessError } from '../../common/errors/business.error';
-import { User } from '../models';
+import { Collection, User } from '../models';
 import Role from '../models/role.model';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -68,6 +68,11 @@ class _UserService implements UserService {
       email: input.email,
       password: cryptedPassword,
       roleId: role.id,
+    });
+
+    await Collection.create({
+      name: "Mes images",
+      userId: createdUser.id,
     });
 
     return createdUser.reload();
