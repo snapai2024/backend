@@ -3,6 +3,7 @@ import { google } from '@google-cloud/vision/build/protos/protos';
 import IAnnotateImageResponse = google.cloud.vision.v1.IAnnotateImageResponse;
 import { Image } from '../models';
 import { BusinessError } from '../../common/errors/business.error';
+import { CollectionService } from './collection.service';
 
 export interface ImageService {
     getById(id: number): Promise<Image>;
@@ -44,7 +45,18 @@ class _ImageService implements ImageService {
     /**
      * Create new image model.
      */
-    public async create(input: Image): Promise<Image> {
+    public async create(input: Image): Promise<Image>
+    {
+        try {
+            if (!input.collectionId) throw new BusinessError(`Collection ${input.collectionId} does not exists.`);
+
+            const collection = await CollectionService.getById(Number(input.collectionId));
+
+            if (!collection) throw new BusinessError(`Collection ${input.collectionId} does not exists.`);
+        } catch (e) {
+            throw new BusinessError("Invalid collection.");
+        }
+
         const createdImage = await Image.create({
             name: input.name,
             description: input.description,
