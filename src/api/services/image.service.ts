@@ -8,6 +8,7 @@ export interface ImageService {
     getById(id: number): Promise<Image>;
     analyse(imagePath: string): Promise<IAnnotateImageResponse>;
     create(input: Image): Promise<Image>;
+    deleteById(id: number): Promise<void>
 }
 
 class _ImageService implements ImageService {
@@ -53,6 +54,19 @@ class _ImageService implements ImageService {
         })
 
         return createdImage.reload();
+    }
+
+    /**
+     * Deletes a specific image by id
+     *
+     * @param id
+     */
+    public async deleteById(id: number): Promise<void> {
+        const image = await Image.findByPk(id);
+
+        if (!image) throw new BusinessError('Image does not exists.');
+
+        await image.destroy();
     }
 }
 

@@ -9,7 +9,7 @@ export interface UserService {
   getById(id: number): Promise<User>;
   create(input: User): Promise<User>;
   update(id: number, input: User): Promise<User>;
-  deleteById(id: number): Promise<User>;
+  deleteById(id: number): Promise<void>;
 }
 
 class _UserService implements UserService {
@@ -128,14 +128,12 @@ class _UserService implements UserService {
    *
    * @param id
    */
-  public async deleteById(id: number): Promise<User> {
+  public async deleteById(id: number): Promise<void> {
     const user = await User.findByPk(id);
 
     if (!user) throw new BusinessError('User does not exists.');
 
     await user.destroy();
-
-    return user;
   }
 
   private validateEmail(email: string, regex: RegExp): boolean {

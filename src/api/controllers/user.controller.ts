@@ -92,9 +92,9 @@ class _UserController implements UserController {
     try {
       const { id } = req.params;
 
-      const deletedUser: User = await UserService.deleteById(Number(id));
+      await UserService.deleteById(Number(id));
 
-      res.status(200).json(deletedUser);
+      res.status(200).send();
     } catch (err) {
       res.status(400).json({ error: err as CausalError });
     }

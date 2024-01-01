@@ -37,13 +37,14 @@ export default class Collection extends Model {
     @BelongsTo(() => User)
     declare user: User;
 
-    @HasMany(() => Image)
+    @HasMany(() => Image, { onDelete: 'cascade' })
     declare images?: Image[]
 }
 
 export interface CollectionDto {
     id: string;
     name: string;
+    userId: number;
 }
 
 export interface CreateCollectionDto extends Omit<CollectionDto, 'id'> {}

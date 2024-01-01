@@ -35,7 +35,7 @@ export default class User extends Model {
   @BelongsTo(() => Role)
   declare role: Role;
 
-  @HasMany(() => Collection)
+  @HasMany(() => Collection, { onDelete: 'cascade' })
   declare collections?: Collection[]
 }
 
