@@ -8,6 +8,7 @@ import cookieParser from 'cookie-parser';
 import db from '../database';
 import bodyParser from 'body-parser';
 import { Stepper, StepperFactory } from '../common/services/stepper';
+import cors from 'cors';
 
 export class APIBuilder {
   async build(): Promise<Application> {
@@ -28,6 +29,7 @@ export class APIBuilder {
     stepper.nextStep();
     Logger.info(`${stepper} - Creating express application.`, LogType.API);
     const app: Application = express();
+    app.use(cors())
 
     app.listen(config.apiPort, () => Logger.info(`API is listening on port ${config.apiPort}.`, LogType.API));
 
