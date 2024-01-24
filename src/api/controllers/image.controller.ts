@@ -70,9 +70,9 @@ class _ImageController implements ImageController {
     try {
       const { id } = req.params;
 
-      await ImageService.deleteById(Number(id));
+      const deletedImage: Image = await ImageService.deleteById(Number(id));
 
-      res.status(200).send();
+      res.status(200).json(deletedImage);
     } catch (err) {
       res.status(400).json({ error: err as CausalError });
     }

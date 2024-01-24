@@ -9,7 +9,7 @@ export interface ImageService {
   getById(id: number): Promise<Image>;
   analyse(imagePath: string): Promise<IAnnotateImageResponse>;
   create(input: Image): Promise<Image>;
-  deleteById(id: number): Promise<void>;
+  deleteById(id: number): Promise<Image>;
 }
 
 class _ImageService implements ImageService {
@@ -69,12 +69,14 @@ class _ImageService implements ImageService {
    *
    * @param id
    */
-  public async deleteById(id: number): Promise<void> {
+  public async deleteById(id: number): Promise<Image> {
     const image = await Image.findByPk(id);
 
     if (!image) throw new BusinessError('Image does not exists.');
 
     await image.destroy();
+
+    return image;
   }
 }
 

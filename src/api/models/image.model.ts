@@ -54,7 +54,9 @@ export default class Image extends Model {
 
   @AfterFind
   static converterHook(instance: Image) {
-    instance.labels = JSON.parse(instance.labels);
+    if (instance && instance.labels) {
+      instance.labels = JSON.parse(instance.labels);
+    }
   }
 }
 
