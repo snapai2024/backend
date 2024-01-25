@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import { BusinessError } from '../../common/errors/business.error';
-import { User } from '../models';
+import { Collection, User } from '../models';
 import Role from '../models/role.model';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -9,7 +9,7 @@ export interface UserService {
   getById(id: number): Promise<User>;
   create(input: User): Promise<User>;
   update(id: number, input: User): Promise<User>;
-  deleteById(id: number): Promise<User>;
+  deleteById(id: number): Promise<void>;
 }
 
 class _UserService implements UserService {
@@ -70,6 +70,12 @@ class _UserService implements UserService {
       roleId: role.id,
     });
 
+    await Collection.create({
+      name: "Mes images",
+      default: true,
+      userId: createdUser.id,
+    });
+
     return createdUser.reload();
   }
 
@@ -110,7 +116,7 @@ class _UserService implements UserService {
       user.password = cryptedPassword;
     }
 
-    if (input.roleId !== user.roleId) {
+    if (input.roleId && input.roleId !== user.roleId) {
       const role = await Role.findByPk(input.roleId);
 
       if (!role) throw new BusinessError(`Role id '${input.roleId}' does not exists.`);
@@ -128,14 +134,12 @@ class _UserService implements UserService {
    *
    * @param id
    */
-  public async deleteById(id: number): Promise<User> {
+  public async deleteById(id: number): Promise<void> {
     const user = await User.findByPk(id);
 
     if (!user) throw new BusinessError('User does not exists.');
 
     await user.destroy();
-
-    return user;
   }
 
   private validateEmail(email: string, regex: RegExp): boolean {

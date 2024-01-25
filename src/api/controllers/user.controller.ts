@@ -1,6 +1,6 @@
 import { Response } from 'express';
 import { UserService } from '../services/user.service';
-import { CreateUserDto, User, UpdateUserDto, UserDto } from '../models';
+import { CreateUserDto, User, UpdateUserDto } from '../models';
 import { CausalError } from '../../common/errors/causal.error';
 import { CustomRequest } from '../../common/entities/customRequest';
 import { UserParser } from '../parsers/user.parser';
@@ -9,6 +9,7 @@ export interface UserController {
   getAll(req: CustomRequest, res: Response): any;
   getById(req: CustomRequest, res: Response): any;
   getCurrent(req: CustomRequest, res: Response): any;
+  getMyCollections(req: CustomRequest, res: Response): any;
   register(req: CustomRequest, res: Response): any;
   update(req: CustomRequest, res: Response): any;
   delete(req: CustomRequest, res: Response): any;
@@ -39,9 +40,15 @@ class _UserController implements UserController {
 
   public async getCurrent(req: CustomRequest, res: Response) {
     try {
-      const user: User = await UserService.getById(Number(req.user!.id));
+      res.status(200).json(req.user);
+    } catch (err) {
+      res.status(400).json({ error: err as CausalError });
+    }
+  }
 
-      res.status(200).json(user);
+  public async getMyCollections(req: CustomRequest, res: Response) {
+    try {
+      res.status(200).json(req.user?.collections);
     } catch (err) {
       res.status(400).json({ error: err as CausalError });
     }
@@ -92,9 +99,9 @@ class _UserController implements UserController {
     try {
       const { id } = req.params;
 
-      const deletedUser: User = await UserService.deleteById(Number(id));
+      await UserService.deleteById(Number(id));
 
-      res.status(200).json(deletedUser);
+      res.status(200).send();
     } catch (err) {
       res.status(400).json({ error: err as CausalError });
     }
