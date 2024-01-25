@@ -4,7 +4,7 @@ import { BusinessError } from '../../common/errors/business.error';
 export interface CollectionService {
     getById(id: number): Promise<Collection>;
     create(input: Collection): Promise<Collection>;
-    deleteById(id: number): Promise<void>;
+    deleteById(id: number): Promise<Collection>;
 }
 
 class _CollectionService implements CollectionService {
@@ -38,12 +38,14 @@ class _CollectionService implements CollectionService {
      *
      * @param id
      */
-    public async deleteById(id: number): Promise<void> {
+    public async deleteById(id: number): Promise<Collection> {
         const collection = await Collection.findByPk(id);
 
         if (!collection) throw new BusinessError('Collection does not exists.');
 
         await collection.destroy();
+
+        return collection;
     }
 }
 

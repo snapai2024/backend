@@ -9,7 +9,7 @@ import { BusinessError } from '../../common/errors/business.error';
 export interface CollectionController {
     getById(req: CustomRequest, res: Response): any;
     create(req: CustomRequest, res: Response): any;
-    delete(req: CustomRequest, res: Response): void;
+    delete(req: CustomRequest, res: Response): any;
 }
 
 class _CollectionController implements CollectionController {
@@ -27,8 +27,10 @@ class _CollectionController implements CollectionController {
 
     public async create(req: CustomRequest, res: Response) {
         try {
+            if (!req.user) return;
+
             const { name } = req.body;
-            const { id } = req.user!;
+            const { id } = req.user;
 
             const input: CreateCollectionDto = {
                 name: name,
@@ -49,13 +51,13 @@ class _CollectionController implements CollectionController {
         try {
             const { id } = req.params;
 
-            if (req.user!.collections?.filter((collection) => collection.id === Number(id)).length == 0) {
+            if (req.user && req.user.collections?.filter((collection) => collection.id === Number(id)).length == 0) {
                 throw new BusinessError("This collection is not yours.")
             }
 
-            await CollectionService.deleteById(Number(id));
+            const deletedCollection: Collection = await CollectionService.deleteById(Number(id));
 
-            res.status(200).send();
+            res.status(200).json(deletedCollection);
         } catch (err) {
             res.status(400).json({ error: err as CausalError });
         }
