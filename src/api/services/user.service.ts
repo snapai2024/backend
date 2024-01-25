@@ -116,7 +116,7 @@ class _UserService implements UserService {
       user.password = cryptedPassword;
     }
 
-    if (input.roleId !== user.roleId) {
+    if (input.roleId && input.roleId !== user.roleId) {
       const role = await Role.findByPk(input.roleId);
 
       if (!role) throw new BusinessError(`Role id '${input.roleId}' does not exists.`);
