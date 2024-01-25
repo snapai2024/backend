@@ -72,6 +72,7 @@ class _UserService implements UserService {
 
     await Collection.create({
       name: "Mes images",
+      default: true,
       userId: createdUser.id,
     });
 

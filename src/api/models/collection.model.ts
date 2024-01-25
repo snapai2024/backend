@@ -33,6 +33,13 @@ export default class Collection extends Model {
   })
   declare name: string;
 
+  @Column({
+    type: DataType.BOOLEAN,
+    allowNull: false,
+    defaultValue: false
+  })
+  declare default: boolean;
+
   @ForeignKey(() => User)
   @Column
   declare userId: number;

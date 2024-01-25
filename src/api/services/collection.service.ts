@@ -43,6 +43,8 @@ class _CollectionService implements CollectionService {
 
         if (!collection) throw new BusinessError('Collection does not exists.');
 
+        if (collection.default) throw new BusinessError('Vous ne pouvez pas supprimer votre collection par défaut.');
+
         await collection.destroy();
 
         return collection;
