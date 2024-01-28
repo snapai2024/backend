@@ -1,0 +1,24 @@
+name: test
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+    branches: ['**']
+
+jobs:
+  actions:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20.x]
+    steps:
+      - uses: actions/checkout@v3
+      - name: setup-nodejs
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20.x'
+      - name: dependencies
+        run: npm install
+      - name: test
+        run: npm test
