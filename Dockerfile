@@ -15,7 +15,6 @@ RUN npm run build
 FROM node:slim
 
 ENV NODE_ENV production
-USER node
 
 # Create app directory
 WORKDIR /usr/src/app
@@ -23,8 +22,7 @@ WORKDIR /usr/src/app
 # Install app dependencies
 COPY package.json package-lock.json ./
 
-RUN npm cache clean --force
-RUN npm install --only=prod
+RUN npm install
 
 COPY --from=builder /usr/src/app/dist ./dist
 
