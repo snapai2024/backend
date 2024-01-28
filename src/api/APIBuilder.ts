@@ -11,7 +11,6 @@ import { Stepper, StepperFactory } from '../common/services/stepper';
 import cors from 'cors';
 
 export class APIBuilder {
-
   corsOptions = {
     origin: '*',
   };
@@ -34,7 +33,7 @@ export class APIBuilder {
     stepper.nextStep();
     Logger.info(`${stepper} - Creating express application.`, LogType.API);
     const app: Application = express();
-    app.use(cors(this.corsOptions))
+    app.use(cors(this.corsOptions));
 
     app.listen(config.apiPort, () => Logger.info(`API is listening on port ${config.apiPort}.`, LogType.API));
 
