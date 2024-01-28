@@ -23,7 +23,8 @@ WORKDIR /usr/src/app
 # Install app dependencies
 COPY package.json package-lock.json ./
 
-RUN npm install
+RUN npm cache clean --force
+RUN npm install --only=prod
 
 COPY --from=builder /usr/src/app/dist ./dist
 
